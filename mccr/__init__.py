@@ -1,12 +1,10 @@
 import asyncio
-from asyncio import AbstractEventLoop
 
 import uvicorn
 # noinspection PyPackageRequirements
 from mcdreforged.api.all import *
 # noinspection PyPackageRequirements
 from mcdreforged.command.command_manager import CommandManager
-from mcdreforged.handler.impl import VanillaHandler
 # noinspection PyPackageRequirements
 from mcdreforged.mcdr_server import MCDReforgedServer
 
@@ -34,7 +32,8 @@ def on_load(server: PluginServerInterface, old):
     app_server = uvicorn.Server(uvicorn.Config(
         app='mccr.app:app',
         host='127.0.0.1',
-        port=config.http_port
+        port=config.http_port,
+        log_level='critical',
     ))
 
     start_app_server()
