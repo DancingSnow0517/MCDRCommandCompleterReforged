@@ -1,10 +1,12 @@
 import asyncio
+from asyncio import AbstractEventLoop
 
 import uvicorn
 # noinspection PyPackageRequirements
 from mcdreforged.api.all import *
 # noinspection PyPackageRequirements
 from mcdreforged.command.command_manager import CommandManager
+from mcdreforged.handler.impl import VanillaHandler
 # noinspection PyPackageRequirements
 from mcdreforged.mcdr_server import MCDReforgedServer
 
@@ -48,4 +50,4 @@ def on_unload(server: PluginServerInterface):
 
 
 def on_server_startup(server: PluginServerInterface):
-    server.execute_command(f'/configureCompletion localhost:{config.http_port}')
+    server.execute(f'/configureCompletion localhost:{config.http_port}')
