@@ -1,16 +1,16 @@
 {
-    "id": "my_plugin",
+    "id": "mccr",
     "version": "1.0.0",
-    "name": "My Plugin",
-    "description": "This description is a description to your plugin",
+    "name": "MCDRCommandCompleterReforged",
+    "description": "MCDR Command Completer",
     "author": [
-        "You"
+        "DnacingSnow",
+        "ZhuRuoLing"
     ],
-    "link": "https://github.com/MCDReforged/PluginTemplate",
+    "link": "https://github.com/DancingSnow0517/MCDRCommandCompleterReforged",
     "dependencies": {
     },
 
     "resources": [
-        "lang"
     ]
 }
