@@ -45,3 +45,7 @@ def start_app_server():
 def on_unload(server: PluginServerInterface):
     loop.create_task(app_server.shutdown())
     loop.stop()
+
+
+def on_server_startup(server: PluginServerInterface):
+    server.execute_command(f'/configureCompletion localhost:{config.http_port}')
