@@ -27,6 +27,10 @@ def on_load(server: PluginServerInterface, old):
     command_manager = mcdr_server.command_manager
     config = server.load_config_simple(target_class=Config)
 
+    if old is not None:
+        while old.loop.is_running():
+            pass
+
     app_server = uvicorn.Server(uvicorn.Config(
         app='mccr.app:app',
         host='127.0.0.1',
