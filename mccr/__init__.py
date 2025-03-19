@@ -38,6 +38,9 @@ def on_load(server: PluginServerInterface, old):
 
     start_app_server()
 
+    if server.is_server_running():
+        server.execute(f'/configureCompletion localhost:{config.http_port}')
+
 
 @new_thread("mccr_http_server")
 def start_app_server():
