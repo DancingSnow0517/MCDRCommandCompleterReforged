@@ -21,6 +21,7 @@ async def get_completion(player_name: str, command: str):
     suggestions = command_manager.suggest_command(command, command_source)
     last_element = command.split(' ')[-1].lstrip(' ').rstrip(' ')
     suggest_list = set(suggestion.suggest_input for suggestion in suggestions)
-    if len(suggest_list) == 1:
-        return suggest_list
-    return set(filter(lambda s: s.startswith(last_element), suggest_list))
+    return {
+        'completion': set(filter(lambda s: s.startswith(last_element), suggest_list)),
+        'hint': suggestions.complete_hint if suggestions.complete_hint else ''
+    }
