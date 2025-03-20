@@ -12,7 +12,10 @@ app = FastAPI()
 @app.get('/completion')
 async def get_completion(player_name: str, command: str):
     if not mcdr_server or not command_manager:
-        return []
+        return {
+            'completion': [],
+            'hint': ''
+        }
     command_source = PlayerCommandSource(
         mcdr_server,
         Info(InfoSource.SERVER, ''),
