@@ -1,6 +1,7 @@
 import asyncio
 import json
-from typing import Any, Awaitable, Coroutine
+import re
+from typing import Any, Coroutine
 
 import uvicorn
 # noinspection PyPackageRequirements
@@ -22,20 +23,28 @@ loop: asyncio.AbstractEventLoop
 
 
 class MyInfoFilter(InfoFilter):
+    @staticmethod
+    def strip_ansi(o: str) -> str:
+        pattern = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+        stripped = pattern.sub('', o)
+        return stripped
+
     def filter_server_info(self, info: Info) -> bool:
         global __mcdr_server, loop
-        ct = info.content
-        if ct.startswith("ᅀ兀") and ct.endswith("兀ᅀ"):
-            ct = ct.removesuffix("兀ᅀ").removeprefix("ᅀ兀")
+        ct = MyInfoFilter.strip_ansi(info.raw_content)
+        if ct.startswith("$$CompletionRequest$$") and ct.endswith("$$CompletionRequest$$"):
+            ct = ct.removesuffix("$$CompletionRequest$$").removeprefix("$$CompletionRequest$$")
             query = try_create_query(ct)
             if query is not None:
                 player, command, id = query
                 result = get_completion_impl(player, command)
                 result["id"] = id
                 json_result = json.dumps(result)
-                PluginServerInterface.get_instance().execute("ᅀ兀" + json_result + "兀ᅀ")
+                PluginServerInterface.get_instance().execute(
+                    "$$CompletionResult$$" + json_result + "$$CompletionResult$$")
             return False
         return True
+
 
 def on_load(server: PluginServerInterface, old):
     global __mcdr_server, command_manager, config, app_server, loop
